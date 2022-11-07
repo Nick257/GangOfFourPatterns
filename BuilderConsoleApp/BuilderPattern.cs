@@ -152,7 +152,7 @@ namespace BuilderConsoleApp.BuilderPattern
                 _employee.employeePosition = EmployeePosition.PoorDeveloper;
 
                 _employee.benefits = _context.Benefits
-                    .Where(p => p.AvailableForThisEmployeePositionAndHigher <= _employee.EmployeePosition)
+                    .Where(p => (int)p.AvailableForThisEmployeePositionAndHigher <= (int)_employee.EmployeePosition)
                     .ToList();
             }
 
