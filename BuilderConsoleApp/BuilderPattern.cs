@@ -26,17 +26,17 @@ namespace BuilderConsoleApp.BuilderPattern
     [Table("Employees")]
     public class Employee : IEmployee
     {
-        private Guid _employeeId;
+        private Guid employeeId;
         private Guid? managerId;
         private string name;
         private int salary;
-        private EmployeePosition _employeePosition;
+        private EmployeePosition employeePosition;
         private ICollection<Benefit> benefits;
 
         public Guid EmployeeId
         {
-            get { return _employeeId; }
-            private set { _employeeId = Guid.NewGuid(); }
+            get { return employeeId; }
+            private set { employeeId = Guid.NewGuid(); }
         }
         public Guid? ManagerId
         {
@@ -55,8 +55,8 @@ namespace BuilderConsoleApp.BuilderPattern
         }
         public EmployeePosition EmployeePosition
         {
-            get { return _employeePosition; }
-            private set { _employeePosition = value; }
+            get { return employeePosition; }
+            private set { employeePosition = value; }
         }
         public ICollection<Benefit> Benefits
         {
@@ -81,9 +81,9 @@ namespace BuilderConsoleApp.BuilderPattern
                 _context = context;
                 _employee = new Employee();
                 _employee.managerId = null;
-                _employee._employeePosition = EmployeePosition.CruelManager;
+                _employee.employeePosition = EmployeePosition.CruelManager;
                 _employee.benefits = _context.Benefits
-                    .Where(p => p.AvailableForThisEmployeePositionAndHigher <= _employee.EmployeePosition)
+                    .Where(p => (int)p.AvailableForThisEmployeePositionAndHigher <= (int)_employee.EmployeePosition)
                     .ToList();
             }
 
@@ -112,15 +112,10 @@ namespace BuilderConsoleApp.BuilderPattern
                 _context = context;
                 _employee = new Employee();
 
-                _employee.managerId = _context.Employees
-                    .Where(p => (int)p.EmployeePosition == ((int)_employee.EmployeePosition + 1))
-                    .Select(x => x.EmployeeId)
-                    .FirstOrDefault();
-
-                _employee._employeePosition = EmployeePosition.HarshTeamLeader;
+                _employee.employeePosition = EmployeePosition.HarshTeamLeader;
 
                 _employee.benefits = _context.Benefits
-                    .Where(p => p.AvailableForThisEmployeePositionAndHigher <= _employee.EmployeePosition)
+                    .Where(p => (int)p.AvailableForThisEmployeePositionAndHigher <= (int)_employee.EmployeePosition)
                     .ToList();
             }
 
@@ -154,12 +149,7 @@ namespace BuilderConsoleApp.BuilderPattern
                 _context = context;
                 _employee = new Employee();
 
-                _employee.managerId = _context.Employees
-                    .Where(p => (int)p.EmployeePosition == ((int)_employee.EmployeePosition + 1))
-                    .Select(x => x.EmployeeId)
-                    .FirstOrDefault();
-
-                _employee._employeePosition = EmployeePosition.PoorDeveloper;
+                _employee.employeePosition = EmployeePosition.PoorDeveloper;
 
                 _employee.benefits = _context.Benefits
                     .Where(p => p.AvailableForThisEmployeePositionAndHigher <= _employee.EmployeePosition)
